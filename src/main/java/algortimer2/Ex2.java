@@ -75,3 +75,6 @@ public class Ex2 {
 
 }
 
+@SuppressWarnings("serial") class FileFormatException extends Exception {
+    //Input file has the wrong format
+    public FileFormatException(String message) { super(message); } }
