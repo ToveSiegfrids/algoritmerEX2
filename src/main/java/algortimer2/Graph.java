@@ -13,7 +13,7 @@ public class Graph {
     }
 
     // Add a node to the graph if it doesn't exist yet
-     public void addNode(String name) {
+    public void addNode(String name) {
         if (!nodeMap.containsKey(name)) {
             Node n = new Node();
             nodeMap.put(name, n);
@@ -39,17 +39,29 @@ public class Graph {
     public void topSort() throws CycleFound {
         Queue<Node> zeroIndegreeList = new LinkedList<>();
         int counter = 0;
+        List<String> topOrder = new ArrayList<>();  //list for the final topological order
 
-        // Put all nodes with indegree 0 into queue
-        for (Node v : nodes) { //goes though every node
-            if (v.indegree == 0) //if no node goes "into" this node
-                zeroIndegreeList.add(v); //we add it to the queue of nodes with indegree 0
+
+        // Put all nodes with indegree 0  their queue
+        for (Map.Entry<String, Node> entry : nodeMap.entrySet()) {
+            if (entry.getValue().indegree == 0)
+                zeroIndegreeList.add(entry.getValue());
         }
 
         //until the queue of nodes with indegree 0 is empty
         while (!zeroIndegreeList.isEmpty()) {
             Node v = zeroIndegreeList.remove(); //we remove the first node in the queue
             v.topNum = ++counter; //we set the topological number of this node and increase the counter (next nodes position number)
+
+            //need to find the name of the node (so we can print the order when we are done)
+            String nodeName = null;
+            for (Map.Entry<String, Node> entry : nodeMap.entrySet()) {
+                if (entry.getValue() == v) {
+                    nodeName = entry.getKey();
+                    break;
+                }
+            }
+            topOrder.add(nodeName);
 
             for (Node w : v.neighbors) { //for every neighbor of that node
                 if (--w.indegree == 0) //if the neighbor has no more incoming edges
@@ -65,11 +77,14 @@ public class Graph {
 
         //print the topological order
         System.out.println("Topological order:");
-        for (int i = 0; i < nodes.size(); i++) {
-            System.out.print(" " + nodes.get(i).topNum);
+        for (String s : topOrder) {
+            System.out.print(s + " ");
         }
+        System.out.println();
 
-    }
+
+
+}
 }
 
 // Exception class
