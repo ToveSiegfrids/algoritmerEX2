@@ -1,12 +1,11 @@
 package algortimer2;
 import java.io.*;
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.*;
 
+
 public class Ex2 {
-    public static void main(String[] args) throws IOException, FileFormatException {
+    public static void main(String[] args) throws IOException, FileFormatException, CycleFound {
 
         // Choose a file in the folder Graphs in the current directory
         JFileChooser jf = new JFileChooser("Graphs");
@@ -14,15 +13,13 @@ public class Ex2 {
 
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = jf.getSelectedFile();
-            //System.out.println("Selected file: " + selectedFile.getAbsolutePath());   // Debug
-            Graph graph = new Graph();
-            readGraph(selectedFile);    // Read nodes and edges from the selected file
-
-        }
+            Graph graph = readGraph(selectedFile); // Read nodes and edges from the selected file
+            graph.topSort();
+            }
     }
 
     // Read in a graph from a file and print out the nodes and edges
-    public static void readGraph(File selectedFile) throws IOException, FileFormatException {
+    public static Graph readGraph(File selectedFile) throws IOException, FileFormatException, CycleFound {
 
         Graph graph = new Graph();
 
@@ -31,12 +28,13 @@ public class Ex2 {
 
         try {
             // Skip over comment lines in the beginning of the file
-            while ( !(line = r.readLine()).equalsIgnoreCase("[Vertex]") ) {} ;
+            while ( !(line = r.readLine()).equalsIgnoreCase("[Vertex]") ) {}
             System.out.println(); System.out.println("Nodes:");
 
             // Read all vertex definitions
             while (!(line=r.readLine()).equalsIgnoreCase("[Edges]") ) {
                 if (line.trim().length() > 0) {  // Skip empty lines
+
                     try {
                         // Split the line into a comma separated list V1,V2 etc
                         String[] nodeNames=line.split(",");
@@ -78,7 +76,7 @@ public class Ex2 {
         }
         r.close();  // Close the reader
         System.out.println();
-        graph.topSort();
+        return graph;
     }
 
 }
