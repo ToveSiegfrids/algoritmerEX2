@@ -1,6 +1,9 @@
 package algortimer2;
 import java.io.*;
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.*;
 
 public class Ex2 {
     public static void main(String[] args) throws IOException, FileFormatException {
@@ -12,13 +15,16 @@ public class Ex2 {
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = jf.getSelectedFile();
             //System.out.println("Selected file: " + selectedFile.getAbsolutePath());   // Debug
-
+            Graph graph = new Graph();
             readGraph(selectedFile);    // Read nodes and edges from the selected file
+
         }
     }
 
     // Read in a graph from a file and print out the nodes and edges
     public static void readGraph(File selectedFile) throws IOException, FileFormatException {
+
+        Graph graph = new Graph();
 
         BufferedReader r = new BufferedReader(new FileReader(selectedFile));
         String line=null;
@@ -37,7 +43,7 @@ public class Ex2 {
 
                         for (String n:nodeNames) {
                             System.out.println(n.trim() );   // Trim and print the node name
-                            // Here you should create a node in the graph
+                            graph.addNode(n.trim());
                         }
 
                     } catch (Exception e) {   // Something wrong in the graph file
@@ -61,7 +67,7 @@ public class Ex2 {
                     for (String e:edges) {       // For all edges
                         String[] edgePair = e.trim().split(":"); //Split edge components v1:v2
                         System.out.println (edgePair[0].trim() + " " + edgePair[1].trim() );
-                        // Here you should create an edge in the graph
+                        graph.addEdge(edgePair[0].trim(), edgePair[1].trim());
                     }
 
                 } catch (Exception e) { //Something is wrong, Edges should be in format v1:v2
@@ -71,10 +77,16 @@ public class Ex2 {
             }
         }
         r.close();  // Close the reader
+        System.out.println();
+        graph.topSort();
     }
 
 }
 
 @SuppressWarnings("serial") class FileFormatException extends Exception {
     //Input file has the wrong format
-    public FileFormatException(String message) { super(message); } }
+    public FileFormatException(String message) {
+        super(message);
+    }}
+
+
