@@ -14,7 +14,7 @@ public class Ex2 {
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = jf.getSelectedFile();
             Graph graph = readGraph(selectedFile); // Read nodes and edges from the selected file
-            graph.topSort();
+            graph.topSort(); //does a topological sort on the graph
             }
     }
 
@@ -31,7 +31,7 @@ public class Ex2 {
             while ( !(line = r.readLine()).equalsIgnoreCase("[Vertex]") ) {}
             System.out.println(); System.out.println("Nodes:");
 
-            // Read all vertex definitions
+            // Read all vertex definitions (until reaching section [Edges]
             while (!(line=r.readLine()).equalsIgnoreCase("[Edges]") ) {
                 if (line.trim().length() > 0) {  // Skip empty lines
 
@@ -41,7 +41,7 @@ public class Ex2 {
 
                         for (String n:nodeNames) {
                             System.out.println(n.trim() );   // Trim and print the node name
-                            graph.addNode(n.trim());
+                            graph.addNode(n.trim());   //adds the node to the graph
                         }
 
                     } catch (Exception e) {   // Something wrong in the graph file
@@ -60,6 +60,7 @@ public class Ex2 {
         while ( (line=r.readLine()) !=null ) {
             if (line.trim().length() > 0) {  // Skip empty lines
                 try {
+                    //splits line to edge pairs, separates by ","
                     String[] edges=line.split(",");           // Edges are comma separated pairs e1:e2
 
                     for (String e:edges) {       // For all edges
