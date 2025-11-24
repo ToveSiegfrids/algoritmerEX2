@@ -14,8 +14,11 @@ public class Ex2 {
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = jf.getSelectedFile();
             Graph graph = readGraph(selectedFile); // Read nodes and edges from the selected file
+            try{
             graph.topSort(); //does a topological sort on the graph
-            }
+            } catch (CycleFound e) {
+            System.out.println(e.getMessage());}
+        }
     }
 
     // Read in a graph from a file and print out the nodes and edges
